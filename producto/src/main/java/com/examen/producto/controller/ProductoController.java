@@ -29,18 +29,18 @@ public class ProductoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Producto> getProductoById(@PathVariable Integer id) {
-        return ResponseEntity.ok(productoService.getProductoById(id));
+    public ResponseEntity<Producto> getProducto(@PathVariable Integer id) {
+        return ResponseEntity.ok(productoService.findById(id));
     }
 
     @GetMapping
     public ResponseEntity<List<Producto>> getAllProductos() {
-        return ResponseEntity.ok(productoService.getAllProductos());
+        return ResponseEntity.ok(productoService.findAll());
     }
 
     @PostMapping
     public ResponseEntity<Producto> createProducto(@RequestBody Producto producto) {
-        return ResponseEntity.ok(productoService.createProducto(producto));
+        return ResponseEntity.ok(productoService.create(producto));
     }
 
     @PutMapping("/{id}/estado")

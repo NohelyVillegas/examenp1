@@ -13,42 +13,42 @@ import com.examen.producto.repository.CategoriaProductoRepository;
 @Service
 public class CategoriaProductoService {
 
-    private final CategoriaProductoRepository categoriaProductoRepository;
+    private final CategoriaProductoRepository repository;
 
     @Autowired
-    public CategoriaProductoService(CategoriaProductoRepository categoriaProductoRepository) {
-        this.categoriaProductoRepository = categoriaProductoRepository;
-    }
-
-    @Transactional
-    public CategoriaProducto createCategoria(CategoriaProducto categoria) {
-        return categoriaProductoRepository.save(categoria);
+    public CategoriaProductoService(CategoriaProductoRepository repository) {
+        this.repository = repository;
     }
 
     @Transactional(readOnly = true)
-    public List<CategoriaProducto> getAllCategorias() {
-        return categoriaProductoRepository.findAll();
+    public List<CategoriaProducto> findAll() {
+        return repository.findAll();
     }
 
     @Transactional(readOnly = true)
-    public CategoriaProducto getCategoriaById(Integer id) {
-        return categoriaProductoRepository.findById(id)
-                .orElseThrow(() -> new CategoriaNotFoundException("Categoría no encontrada con ID: " + id));
+    public CategoriaProducto findById(Integer id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new CategoriaNotFoundException("No se encontró la categoría con ID: " + id));
     }
 
     @Transactional
-    public CategoriaProducto updateCategoria(Integer id, CategoriaProducto categoriaDetails) {
-        CategoriaProducto categoria = getCategoriaById(id);
-        categoria.setNombreCategoria(categoriaDetails.getNombreCategoria());
-        categoria.setDescripcion(categoriaDetails.getDescripcion());
-        return categoriaProductoRepository.save(categoria);
+    public CategoriaProducto create(CategoriaProducto categoria) {
+        return repository.save(categoria);
     }
 
     @Transactional
-    public void deleteCategoria(Integer id) {
-        if (!categoriaProductoRepository.existsById(id)) {
-            throw new CategoriaNotFoundException("Categoría no encontrada con ID: " + id);
+    public CategoriaProducto update(Integer id, CategoriaProducto categoria) {
+        CategoriaProducto existente = findById(id);
+        existente.setNombreCategoria(categoria.getNombreCategoria());
+        existente.setDescripcion(categoria.getDescripcion());
+        return repository.save(existente);
+    }
+
+    @Transactional
+    public void delete(Integer id) {
+        if (!repository.existsById(id)) {
+            throw new CategoriaNotFoundException("No se encontró la categoría con ID: " + id);
         }
-        categoriaProductoRepository.deleteById(id);
+        repository.deleteById(id);
     }
 } 
