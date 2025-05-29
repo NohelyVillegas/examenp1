@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: producto_postgres
+    environment:
+      POSTGRES_DB: producto_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Nohely01.
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./src/main/resources/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+
+volumes:
+  postgres_data: 
